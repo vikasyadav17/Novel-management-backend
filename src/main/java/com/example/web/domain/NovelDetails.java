@@ -1,5 +1,6 @@
 package com.example.web.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +18,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "novel")
 @NoArgsConstructor
 @Entity
 @Table(name = "noveldetails", schema = "library")
@@ -27,6 +28,7 @@ public class NovelDetails {
     private Long iD;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private boolean mcCheating;
