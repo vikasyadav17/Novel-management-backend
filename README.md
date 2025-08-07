@@ -23,7 +23,7 @@ A backend system to manage Novels using Spring Boot, JPA, MapStruct, and DTO arc
 - Spring Data JPA (Hibernate)
 - MapStruct
 - Lombok
-- MySQL 
+- MySQL
 - SLF4J + Logback for Logging
 
 ---
@@ -40,7 +40,7 @@ A backend system to manage Novels using Spring Boot, JPA, MapStruct, and DTO arc
 ## 📁 Directory Structure
 
 ```plaintext
-com.example.web
+com.novel
 ├── controller
 │   └── NovelController.java
 ├── domain
@@ -58,3 +58,4 @@ com.example.web
 │       └── NovelServiceImpl.java
 └── exception
     └── GlobalExceptionHandler.java
+```
