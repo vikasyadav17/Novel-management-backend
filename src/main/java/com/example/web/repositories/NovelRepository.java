@@ -10,6 +10,7 @@ import com.example.web.domain.Novel;
 @Repository
 public interface NovelRepository extends CrudRepository<Novel, Long> {
 
+    @SuppressWarnings("unchecked")
     Novel save(Novel novel);
 
     Optional<Novel> findById(Long id);
