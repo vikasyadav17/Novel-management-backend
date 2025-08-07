@@ -1,10 +1,12 @@
 package com.example.web.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,9 @@ public class Novel {
     private String link;
 
     private String genre;
+
+    @OneToOne(mappedBy = "novel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private NovelDetails novelDetails;
 
     public Novel(String name, String link, String genre) {
         this.name = name;
