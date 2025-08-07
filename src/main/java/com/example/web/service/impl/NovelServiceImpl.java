@@ -19,7 +19,7 @@ public class NovelServiceImpl implements NovelService {
     public Long addNovelIfNotExists(Novel novel) {
         try {
             System.out.println("Adding Novel");
-            if (novelrepo.findByName(novel.getName()).isPresent()) {
+            if (novelrepo.findByNameOrLink(novel.getName(), novel.getLink()).isPresent()) {
                 throw new DataIntegrityViolationException("Novel already exists with name: " + novel.getName());
             }
             Novel n = novelrepo.save(novel);
@@ -34,8 +34,8 @@ public class NovelServiceImpl implements NovelService {
     }
 
     @Override
-    public boolean findNovelByName(String name) {
-        Optional<Novel> novel = novelrepo.findByName(name);
+    public boolean findNovelByNameorLink(String name, String link) {
+        Optional<Novel> novel = novelrepo.findByNameOrLink(name, link);
         if (novel.isPresent()) {
             System.out.println("oops!! Novel is already in the system");
             return true;

@@ -31,7 +31,10 @@ public class NovelDescription {
     @Lob
     private String description;
 
-    private int chaptersRead;
+    private boolean mcCheating;
+
+    @Lob
+    private boolean specialCharacteristicOfMc;
 
     @Lob
     private String comment;

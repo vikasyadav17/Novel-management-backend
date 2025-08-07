@@ -22,7 +22,7 @@ public class NovelController {
     @RequestMapping(value = { "/add" }, method = RequestMethod.POST)
     public ResponseEntity<String> addNovelIfNotExists() {
         Long id = -1L;
-        Novel novel = new Novel("Nine stars hedgemon body art", "https://sto55.com/book/724/",
+        Novel novel = new Novel("Ancient Martial God", "https://sto55.com/book/724/",
                 "Eastern Fantasy");
         if (novel != null)
             id = novelService.addNovelIfNotExists(novel);

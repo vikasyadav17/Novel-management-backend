@@ -6,6 +6,6 @@ public interface NovelService {
 
     public Long addNovelIfNotExists(Novel novel);
 
-    public boolean findNovelByName(String name);
+    public boolean findNovelByNameorLink(String name, String link);
 
 }
