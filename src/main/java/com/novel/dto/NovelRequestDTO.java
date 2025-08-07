@@ -1,6 +1,6 @@
-package com.example.web.dto;
+package com.novel.dto;
 
-import com.example.web.domain.NovelDetails;
+import com.novel.domain.NovelDetails;
 
 import lombok.Getter;
 import lombok.Setter;

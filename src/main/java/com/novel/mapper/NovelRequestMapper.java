@@ -1,9 +1,9 @@
-package com.example.web.mapper;
+package com.novel.mapper;
 
 import org.mapstruct.Mapper;
 
-import com.example.web.domain.Novel;
-import com.example.web.dto.NovelRequestDTO;
+import com.novel.domain.Novel;
+import com.novel.dto.NovelRequestDTO;
 
 @Mapper(componentModel = "spring")
 public interface NovelRequestMapper {

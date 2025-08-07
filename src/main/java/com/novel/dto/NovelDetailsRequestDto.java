@@ -1,4 +1,4 @@
-package com.example.web.dto;
+package com.novel.dto;
 
 import lombok.Getter;
 import lombok.Setter;

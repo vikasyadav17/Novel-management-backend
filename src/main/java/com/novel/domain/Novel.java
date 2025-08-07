@@ -1,4 +1,4 @@
-package com.example.web.domain;
+package com.novel.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

@@ -1,11 +1,11 @@
-package com.example.web.repositories;
+package com.novel.repositories;
 
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.web.domain.Novel;
+import com.novel.domain.Novel;
 
 @Repository
 public interface NovelRepository extends CrudRepository<Novel, Long> {

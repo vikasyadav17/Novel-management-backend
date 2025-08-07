@@ -1,4 +1,4 @@
-package com.example.web.controller;
+package com.novel.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

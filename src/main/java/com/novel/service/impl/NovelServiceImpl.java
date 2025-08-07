@@ -1,15 +1,15 @@
-package com.example.web.service.impl;
+package com.novel.service.impl;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.example.web.domain.Novel;
-import com.example.web.dto.NovelRequestDTO;
-import com.example.web.mapper.NovelRequestMapper;
-import com.example.web.repositories.NovelRepository;
-import com.example.web.service.NovelService;
+import com.novel.domain.Novel;
+import com.novel.dto.NovelRequestDTO;
+import com.novel.mapper.NovelRequestMapper;
+import com.novel.repositories.NovelRepository;
+import com.novel.service.NovelService;
 
 @Service
 public class NovelServiceImpl implements NovelService {
