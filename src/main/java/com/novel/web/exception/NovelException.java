@@ -1,4 +1,4 @@
-package com.novel.exception;
+package com.novel.web.exception;
 
 // import org.apache.catalina.connector.Response;
 import org.springframework.dao.DataIntegrityViolationException;

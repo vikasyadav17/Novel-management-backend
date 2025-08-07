@@ -40,7 +40,7 @@ A backend system to manage Novels using Spring Boot, JPA, MapStruct, and DTO arc
 ## 📁 Directory Structure
 
 ```plaintext
-com.novel
+com.novel.web
 ├── controller
 │   └── NovelController.java
 ├── domain

@@ -1,6 +1,6 @@
-package com.novel.service;
+package com.novel.web.service;
 
-import com.novel.dto.NovelRequestDTO;
+import com.novel.web.dto.NovelRequestDTO;
 
 public interface NovelService {
 

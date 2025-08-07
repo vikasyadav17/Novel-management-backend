@@ -1,4 +1,4 @@
-package com.novel.controller;
+package com.novel.web.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.novel.dto.NovelRequestDTO;
-import com.novel.service.NovelService;
+import com.novel.web.dto.NovelRequestDTO;
+import com.novel.web.service.NovelService;
 
 @RestController
 public class NovelController {

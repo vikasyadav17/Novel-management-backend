@@ -1,4 +1,4 @@
-package com.novel.configuration;
+package com.novel.web.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
