@@ -1,96 +1,134 @@
 # 📚 Novel Management System (Spring Boot)
 
-A backend system to manage novels using **Spring Boot**, **JPA**, **MapStruct**, and **DTO architecture**. It follows a clean layered design with proper separation of concerns and integrates logging and exception handling for robustness.
+A backend system to manage novels using Spring Boot, JPA, MapStruct, and DTO architecture.
 
 ---
 
 ## 🚀 Features
 
-- ✅ Add novels with **unique names and links**
-- 🔄 Prevent duplicate entries via **service-layer validation**
-- 📝 Store novel **details/descriptions** in a separate entity (`NovelDetails`)
-- 🔁 MapStruct-based **DTO ↔ Entity** conversion
-- 🧠 Global exception handling
-- 🧪 Swagger/OpenAPI UI for API testing
-- 📃 Meaningful logging with SLF4J
-- 🔐 JPA handles database schema generation
+- Add novels with unique names.
+- Prevent duplicates using service-layer checks.
+- Store novel descriptions in a separate table.
+- DTO to Entity mapping using MapStruct.
+- Clean separation between Controller, Service, and Repository layers.
+- Global exception handling.
+- Logging using SLF4J (Logback).
+- Interactive API docs with Swagger (OpenAPI).
+- Database schema managed via JPA.
 
 ---
 
-## 🧩 Tech Stack
+## 🧩 Technologies Used
 
-- Java 17+
-- Spring Boot 3.5.4
-- Spring Data JPA (Hibernate)
-- MapStruct
-- Lombok
-- MySQL
-- Swagger/OpenAPI
-- SLF4J + Logback
+- **Java:** 17+
+- **Spring Boot:** 3.5.4
+- **Spring Data JPA** (Hibernate)
+- **MapStruct**
+- **Lombok**
+- **MySQL**
+- **SLF4J + Logback** for Logging
+- **OpenAPI** (Springdoc)
 
 ---
 
-## 🗂️ Project Structure
+## 🏗️ Directory Structure
 
 ```
 com.novel.web
 ├── configuration
 │   └── DbConfig.java
 ├── controller
-│   └── NovelController.java           // REST endpoints
+│   └── NovelController.java
 ├── domain
-│   ├── Novel.java                     // Main entity
-│   └── NovelDetails.java              // Details entity with OneToOne relation
+│   ├── Novel.java
+│   └── NovelDetails.java
 ├── dto
 │   └── request
-│       ├── NovelRequestDTO.java
-│       └── NovelDetailsRequestDTO.java
+│       ├── NovelDetailsRequestDTO.java
+│       └── NovelRequestDTO.java
 ├── exception
-│   └── NovelException.java            // Custom exceptions
+│   └── NovelException.java
 ├── mapper
-│   └── NovelRequestMapper.java        // MapStruct mapper
+│   └── NovelRequestMapper.java
 ├── repositories
 │   └── NovelRepository.java
 ├── service
-│   ├── NovelService.java              // Service interface
+│   ├── NovelService.java
 │   └── impl
-│       └── NovelServiceImpl.java      // Business logic implementation
-├── WebApplication.java                // Spring Boot main class
-└── resources
-    └── static                         // Place favicon/static files here
+│       └── NovelServiceImpl.java
+└── WebApplication.java
 ```
 
 ---
 
-## 📑 API Endpoints
+## ⚙️ How to Run the Project
 
-> Accessible via **Swagger UI** at `http://localhost:8080/swagger-ui/index.html`
+### ✅ Prerequisites
 
-| Method | Endpoint        | Description                    |
-| ------ | --------------- | ------------------------------ |
-| GET    | `/home` or `/`  | Health check / welcome message |
-| POST   | `/add`          | Add a new novel                |
-| GET    | `/name?name=`   | Search novels by name          |
-| GET    | `/genre?genre=` | Search novels by genre         |
+- Java 17 or later
+- Maven 3.6+
+- MySQL Server running locally (or modify `application.properties` accordingly)
+- IDE like IntelliJ IDEA or VS Code
+
+### ▶️ Steps
+
+1. **Clone the Repository**
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
+
+2. **Configure the Database**
+
+Update your `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/your_db_name
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+```
+
+3. **Build the Project**
+
+```bash
+mvn clean install
+```
+
+4. **Run the Application**
+
+```bash
+mvn spring-boot:run
+```
+
+The application will be accessible at:
+
+```
+http://localhost:8080
+```
+
+### 🧪 API Documentation
+
+Once running, Swagger UI (OpenAPI) is available at:
+
+```
+http://localhost:8080/swagger-ui.html
+```
 
 ---
 
 ## 🪵 Logging
 
-- Enabled across **controller**, **service**, and **exception** layers
-- Uses `@Slf4j` (Lombok) and SLF4J backend
-- Log levels used:
-  - `info` – normal operations
-  - `warn` – duplicate or suspicious data
-  - `error` – unexpected exceptions
+Logging is enabled at multiple levels across the application:
+
+- **Levels:** `info`, `warn`, `error`
+- Uses `SLF4J` with `Logback`
+- Logs printed to console
 
 ---
 
-## ❗ Exception Handling
+## 🧼 Notes
 
-- Custom `NovelException.java` for meaningful error propagation
-- Global exception handling with `@ControllerAdvice` (if added)
-- Returns appropriate HTTP status codes like:
-  - `409 CONFLICT` for duplicates
-  - `400 BAD_REQUEST` for validation failures
-  - `500 INTERNAL_SERVER_ERROR` for server-side errors
+- Avoid adding duplicate novels by name/link. The service layer validates and prevents such inserts.
+- Proper exception messages and HTTP status codes are returned for invalid operations.
