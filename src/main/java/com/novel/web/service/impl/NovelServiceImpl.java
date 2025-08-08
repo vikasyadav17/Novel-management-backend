@@ -28,25 +28,20 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     public Long addNovelIfNotExists(NovelRequestDTO novelRequestDTO) {
-        try {
 
-            Novel novel = novelRequestMapper.toEntity(novelRequestDTO);
-            novel.getNovelDetails().setNovel(novel);
-            log.info("Checking if there is already a novel with either same name or link ....");
-            if (novelrepo.findByNameOrLink(novel.getName(), novel.getLink()).isPresent()) {
-                throw new DataIntegrityViolationException("Novel already exists with name: " + novel.getName()
-                        + " /  with the link : " + novel.getLink());
+        Novel novel = novelRequestMapper.toEntity(novelRequestDTO);
+        novel.getNovelDetails().setNovel(novel);
+        log.info("Checking if there is already a novel with either same name or link ....");
+        if (novelrepo.findByNameOrLink(novel.getName(), novel.getLink()).isPresent()) {
+            throw new DataIntegrityViolationException("Novel already exists with name: " + novel.getName()
+                    + " and link : " + novel.getLink());
 
-            }
-            Novel n = novelrepo.save(novel);
-
-            return n.getID();
-
-        } catch (Exception e) {
-            log.error("Exception occurred while saving novel : " + e.getMessage());
-            e.printStackTrace(); // Optional: for full stack trace
         }
-        return -1L;
+        Novel n = novelrepo.save(novel);
+
+        return n.getID();
+
+        // return -1L;
     }
 
     @Override

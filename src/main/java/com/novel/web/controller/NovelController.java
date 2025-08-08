@@ -3,6 +3,7 @@ package com.novel.web.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,13 +52,22 @@ public class NovelController {
     @RequestMapping(value = { "/add" }, method = RequestMethod.POST)
     public ResponseEntity<String> addNovelIfNotExists(@RequestBody NovelRequestDTO novelDTO) {
         log.info("User wants to add novel : " + novelDTO.toString() + " in the database");
-        Long id = -1L;
+        try {
+            Long id = -1L;
 
-        id = novelService.addNovelIfNotExists(novelDTO);
-        if (id == -1L) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Novel not added due to error.");
+            id = novelService.addNovelIfNotExists(novelDTO);
+            // if (id == -1L) {
+            // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Novel
+            // not added due to an error.");
+            // }
+            return ResponseEntity.ok("Record added with ID " + id);
+        } catch (DataIntegrityViolationException ex) {
+            log.warn("Duplicate novel found: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        } catch (Exception ex) {
+            log.error("Unexpected error: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error occurred.");
         }
-        return ResponseEntity.ok("Record added with ID " + id);
 
     }
 
