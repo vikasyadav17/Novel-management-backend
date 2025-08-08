@@ -14,11 +14,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.novel.web.domain.Novel;
 import com.novel.web.dto.request.NovelRequestDTO;
-// import com.novel.web.dto.response.NovelResponseDTO;
 import com.novel.web.mapper.NovelRequestMapper;
-// import com.novel.web.mapper.NovelResponseMapper;
 import com.novel.web.service.NovelService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class NovelController {
 
@@ -34,8 +35,9 @@ public class NovelController {
 
     @RequestMapping(value = { "/add" }, method = RequestMethod.POST)
     public ResponseEntity<String> addNovelIfNotExists(@RequestBody NovelRequestDTO novelDTO) {
+        log.info("User wants to add novel : " + novelDTO.toString() + " in the database");
         Long id = -1L;
-        System.out.println("Request Body -> " + novelDTO.toString());
+
         id = novelService.addNovelIfNotExists(novelDTO);
         if (id == -1L) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Novel not added due to error.");
@@ -48,12 +50,12 @@ public class NovelController {
     public NovelRequestDTO getNovelByName(@RequestParam String name) {
         if (name != null && name.length() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "novel name must not be empty");
-        System.out.println("Looking for novel with name : " + name);
+
         Novel novel = novelService.findNovelByName(name);
         if (novel == null) {
             throw new Error("No novel with such name exists in the database");
         }
-        System.out.println(novel.toString());
+        log.info(" novel found : " + novel.toString());
         NovelRequestDTO dto = novelRequestMapper.toDTO(novel);
         return dto;
     }

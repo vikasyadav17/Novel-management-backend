@@ -1,0 +1,3 @@
+http://localhost:8087/novel?Content-type=application/json&name=Nine Star Hegemon Body Art
+
+http://localhost:8087/genre?Content-type=application/json&genre=Eastern Fantasy

@@ -7,10 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Connection;
 
 import javax.sql.DataSource;
 
+@Slf4j
 @Configuration
 public class DbConfig {
 
@@ -28,6 +31,7 @@ public class DbConfig {
 
     @Bean
     public DataSource dataSource() {
+        log.info("Bean declared for data source");
         return DataSourceBuilder.create().url(dbUrl).username(username).password(password)
                 .driverClassName(driverclassString).build();
     }
@@ -36,11 +40,12 @@ public class DbConfig {
     public void testConnection() {
         try (Connection connection = dataSource().getConnection()) {
             if (connection != null && !connection.isClosed()) {
-                System.out.println("Successfully connected to MYSQL DB");
+                log.info("Connected to the database");
+
             }
 
         } catch (Exception exc) {
-            System.err.println("Failed to get the conneciton");
+            log.error("connection  to the database is unsuccessful");
             exc.printStackTrace();
         }
     }

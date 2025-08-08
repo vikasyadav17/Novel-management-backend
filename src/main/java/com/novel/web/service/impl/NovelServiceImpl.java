@@ -13,6 +13,9 @@ import com.novel.web.mapper.NovelRequestMapper;
 import com.novel.web.repositories.NovelRepository;
 import com.novel.web.service.NovelService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @Primary
 public class NovelServiceImpl implements NovelService {
@@ -26,10 +29,10 @@ public class NovelServiceImpl implements NovelService {
     @Override
     public Long addNovelIfNotExists(NovelRequestDTO novelRequestDTO) {
         try {
-            System.out.println("Adding Novel");
+
             Novel novel = novelRequestMapper.toEntity(novelRequestDTO);
             novel.getNovelDetails().setNovel(novel);
-            System.out.println("Novel to String -> " + novel.toString());
+            log.info("Checking if there is already a novel with either same name or link ....");
             if (novelrepo.findByNameOrLink(novel.getName(), novel.getLink()).isPresent()) {
                 throw new DataIntegrityViolationException("Novel already exists with name: " + novel.getName()
                         + " /  with the link : " + novel.getLink());
@@ -40,7 +43,7 @@ public class NovelServiceImpl implements NovelService {
             return n.getID();
 
         } catch (Exception e) {
-            System.err.println("Exception occurred while saving novel : " + e.getMessage());
+            log.error("Exception occurred while saving novel : " + e.getMessage());
             e.printStackTrace(); // Optional: for full stack trace
         }
         return -1L;
@@ -48,9 +51,10 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     public boolean findNovelByNameorLink(String name, String link) {
+        log.info("Looking for novel with name : " + name + " or with link  " + link);
         Optional<Novel> novel = novelrepo.findByNameOrLink(name, link);
         if (novel.isPresent()) {
-            System.out.println("oops!! Novel is already in the system");
+            log.error("oops!! Novel is already in the system");
             return true;
         }
         return false;
@@ -59,6 +63,7 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     public Novel findNovelByName(String name) {
+        log.info("Looking for novel with name : " + name);
         Optional<Novel> novel = novelrepo.findByNameIgnoreCase(name.trim());
         Novel n = null;
         if (novel.isPresent())
@@ -69,7 +74,7 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     public List<Novel> findNovelByGenre(String genre) {
-        System.out.println("Finding all the novels with genre : " + genre);
+        log.info("Finding all the novels with genre : " + genre);
         List<Novel> novels = novelrepo.findAllByGenreIgnoreCase(genre);
         return novels;
 
