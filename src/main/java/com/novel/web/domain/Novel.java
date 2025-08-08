@@ -28,6 +28,8 @@ public class Novel {
 
     private String name;
 
+    private String originalName;
+
     private String link;
 
     private String genre;
@@ -35,8 +37,9 @@ public class Novel {
     @OneToOne(mappedBy = "novel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private NovelDetails novelDetails;
 
-    public Novel(String name, String link, String genre) {
+    public Novel(String name, String link, String genre, String originalName) {
         this.name = name;
+        this.originalName = originalName;
         this.link = link;
         this.genre = genre;
     }

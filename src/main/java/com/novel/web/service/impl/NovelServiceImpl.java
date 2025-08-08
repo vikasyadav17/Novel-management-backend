@@ -29,6 +29,7 @@ public class NovelServiceImpl implements NovelService {
             System.out.println("Novel to String -> " + novel.toString());
             if (novelrepo.findByNameOrLink(novel.getName(), novel.getLink()).isPresent()) {
                 throw new DataIntegrityViolationException("Novel already exists with name: " + novel.getName());
+
             }
             Novel n = novelrepo.save(novel);
 

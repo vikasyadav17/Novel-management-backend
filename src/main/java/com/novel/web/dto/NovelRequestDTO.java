@@ -12,6 +12,7 @@ import lombok.ToString;
 public class NovelRequestDTO {
 
     private String link;
+    private String originalName;
     private String name;
     private String genre;
     private NovelDetails novelDetails;
