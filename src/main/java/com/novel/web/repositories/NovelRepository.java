@@ -1,5 +1,6 @@
 package com.novel.web.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -20,5 +21,9 @@ public interface NovelRepository extends CrudRepository<Novel, Long> {
     long count();
 
     void deleteById(Long id);
+
+    Optional<Novel> findByNameIgnoreCase(String name);
+
+    List<Novel> findAllByGenreIgnoreCase(String genre);
 
 }

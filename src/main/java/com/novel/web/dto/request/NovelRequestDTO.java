@@ -1,4 +1,4 @@
-package com.novel.web.dto;
+package com.novel.web.dto.request;
 
 import com.novel.web.domain.NovelDetails;
 

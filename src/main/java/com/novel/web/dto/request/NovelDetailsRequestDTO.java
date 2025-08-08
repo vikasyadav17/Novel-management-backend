@@ -1,4 +1,4 @@
-package com.novel.web.dto;
+package com.novel.web.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class NovelDetailsRequestDto {
+public class NovelDetailsRequestDTO {
 
     private String description;
 

@@ -1,5 +1,7 @@
 package com.novel.web.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
@@ -38,6 +40,7 @@ public class NovelDetails {
     @OneToOne
     @MapsId
     @JoinColumn(name = "id") // FK column, also PK
+    @JsonIgnore
     private Novel novel;
 
     NovelDetails(String description, boolean mcCheating, String specialCharacteristicOfMc) {

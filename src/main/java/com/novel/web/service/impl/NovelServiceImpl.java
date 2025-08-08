@@ -1,17 +1,20 @@
 package com.novel.web.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.novel.web.domain.Novel;
-import com.novel.web.dto.NovelRequestDTO;
+import com.novel.web.dto.request.NovelRequestDTO;
 import com.novel.web.mapper.NovelRequestMapper;
 import com.novel.web.repositories.NovelRepository;
 import com.novel.web.service.NovelService;
 
 @Service
+@Primary
 public class NovelServiceImpl implements NovelService {
 
     @Autowired
@@ -28,7 +31,8 @@ public class NovelServiceImpl implements NovelService {
             novel.getNovelDetails().setNovel(novel);
             System.out.println("Novel to String -> " + novel.toString());
             if (novelrepo.findByNameOrLink(novel.getName(), novel.getLink()).isPresent()) {
-                throw new DataIntegrityViolationException("Novel already exists with name: " + novel.getName());
+                throw new DataIntegrityViolationException("Novel already exists with name: " + novel.getName()
+                        + " /  with the link : " + novel.getLink());
 
             }
             Novel n = novelrepo.save(novel);
@@ -50,6 +54,24 @@ public class NovelServiceImpl implements NovelService {
             return true;
         }
         return false;
+
+    }
+
+    @Override
+    public Novel findNovelByName(String name) {
+        Optional<Novel> novel = novelrepo.findByNameIgnoreCase(name.trim());
+        Novel n = null;
+        if (novel.isPresent())
+            n = novel.get();
+
+        return n;
+    }
+
+    @Override
+    public List<Novel> findNovelByGenre(String genre) {
+        System.out.println("Finding all the novels with genre : " + genre);
+        List<Novel> novels = novelrepo.findAllByGenreIgnoreCase(genre);
+        return novels;
 
     }
 
