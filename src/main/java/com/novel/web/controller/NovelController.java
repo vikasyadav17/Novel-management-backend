@@ -17,10 +17,13 @@ import com.novel.web.dto.request.NovelRequestDTO;
 import com.novel.web.mapper.NovelRequestMapper;
 import com.novel.web.service.NovelService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController
+@RestController("/novel")
 public class NovelController {
 
     private NovelService novelService;
@@ -33,11 +36,18 @@ public class NovelController {
 
     }
 
+    @Operation(summary = "Home route", description = "Returns a welcome message for the novel library")
     @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
     public String home() {
         return "Novel library";
     }
 
+    @Operation(summary = "adds a novel", description = "Adds a novel in the library")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Novel added successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @RequestMapping(value = { "/add" }, method = RequestMethod.POST)
     public ResponseEntity<String> addNovelIfNotExists(@RequestBody NovelRequestDTO novelDTO) {
         log.info("User wants to add novel : " + novelDTO.toString() + " in the database");
@@ -51,7 +61,13 @@ public class NovelController {
 
     }
 
-    @RequestMapping(value = "/novel", method = RequestMethod.GET)
+    @Operation(summary = "searches for a novel with a name", description = "returns novel details if exists")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Novel added successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
+    @RequestMapping(value = "/name", method = RequestMethod.GET)
     public ResponseEntity<List<NovelRequestDTO>> getNovelByName(@RequestParam String name) {
         if (name != null && name.length() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "novel name must not be empty");
@@ -65,6 +81,12 @@ public class NovelController {
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(summary = "get Novel with given genre", description = "returns all the novels with the given genre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Novel added successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @RequestMapping(value = "/genre", method = RequestMethod.GET)
     public ResponseEntity<List<NovelRequestDTO>> getNovelByGenre(@RequestParam String genre) {
 
