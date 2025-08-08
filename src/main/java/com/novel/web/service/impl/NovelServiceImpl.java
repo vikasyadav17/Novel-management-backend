@@ -27,6 +27,11 @@ public class NovelServiceImpl implements NovelService {
     private NovelRequestMapper novelRequestMapper;
 
     @Override
+    public Long getNovelsCount() {
+        return novelrepo.count();
+    }
+
+    @Override
     public Long addNovelIfNotExists(NovelRequestDTO novelRequestDTO) {
 
         Novel novel = novelRequestMapper.toEntity(novelRequestDTO);

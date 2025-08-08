@@ -15,4 +15,6 @@ public interface NovelService {
 
     public List<Novel> findNovelByGenre(String genre);
 
+    public Long getNovelsCount();
+
 }

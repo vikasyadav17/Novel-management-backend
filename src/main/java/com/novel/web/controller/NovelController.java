@@ -37,6 +37,15 @@ public class NovelController {
 
     }
 
+    @Operation(summary = "Total no. of novels", description = "returns total numbers novels in the library")
+    @RequestMapping(value = "/novels", method = RequestMethod.GET)
+    public Long getTotalNovels() {
+        log.info("User has requested total number of libraries in the novel");
+        Long novelCount = novelService.getNovelsCount();
+        log.info("total number of novels in the library are  " + novelCount);
+        return novelCount;
+    }
+
     @Operation(summary = "Home route", description = "Returns a welcome message for the novel library")
     @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
     public String home() {
