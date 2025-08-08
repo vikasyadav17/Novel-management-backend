@@ -33,6 +33,11 @@ public class NovelController {
 
     }
 
+    @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
+    public String home() {
+        return "Novel library";
+    }
+
     @RequestMapping(value = { "/add" }, method = RequestMethod.POST)
     public ResponseEntity<String> addNovelIfNotExists(@RequestBody NovelRequestDTO novelDTO) {
         log.info("User wants to add novel : " + novelDTO.toString() + " in the database");
