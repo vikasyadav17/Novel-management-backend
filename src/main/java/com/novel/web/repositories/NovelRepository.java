@@ -22,7 +22,7 @@ public interface NovelRepository extends CrudRepository<Novel, Long> {
 
     void deleteById(Long id);
 
-    Optional<Novel> findByNameIgnoreCase(String name);
+    List<Novel> findByNameContainingIgnoreCase(String name);
 
     List<Novel> findAllByGenreIgnoreCase(String genre);
 

@@ -62,14 +62,10 @@ public class NovelServiceImpl implements NovelService {
     }
 
     @Override
-    public Novel findNovelByName(String name) {
+    public List<Novel> findNovelByName(String name) {
         log.info("Looking for novel with name : " + name);
-        Optional<Novel> novel = novelrepo.findByNameIgnoreCase(name.trim());
-        Novel n = null;
-        if (novel.isPresent())
-            n = novel.get();
-
-        return n;
+        List<Novel> novel = novelrepo.findByNameContainingIgnoreCase(name.trim());
+        return novel;
     }
 
     @Override

@@ -11,7 +11,7 @@ public interface NovelService {
 
     public boolean findNovelByNameorLink(String name, String link);
 
-    public Novel findNovelByName(String name);
+    public List<Novel> findNovelByName(String name);
 
     public List<Novel> findNovelByGenre(String genre);
 

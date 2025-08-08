@@ -47,17 +47,17 @@ public class NovelController {
     }
 
     @RequestMapping(value = "/novel", method = RequestMethod.GET)
-    public NovelRequestDTO getNovelByName(@RequestParam String name) {
+    public ResponseEntity<List<NovelRequestDTO>> getNovelByName(@RequestParam String name) {
         if (name != null && name.length() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "novel name must not be empty");
 
-        Novel novel = novelService.findNovelByName(name);
-        if (novel == null) {
-            throw new Error("No novel with such name exists in the database");
+        List<Novel> novel = novelService.findNovelByName(name);
+        if (novel.size() == 0) {
+            log.error("no novel exists in the sytem that contains " + name + " keyword ");
         }
-        log.info(" novel found : " + novel.toString());
-        NovelRequestDTO dto = novelRequestMapper.toDTO(novel);
-        return dto;
+        log.info(novel.size() + " novel/s found that contains keyword " + name);
+        List<NovelRequestDTO> dto = novelRequestMapper.toDTOList(novel);
+        return ResponseEntity.ok(dto);
     }
 
     @RequestMapping(value = "/genre", method = RequestMethod.GET)
