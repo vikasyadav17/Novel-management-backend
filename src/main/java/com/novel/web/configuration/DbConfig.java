@@ -37,7 +37,7 @@ public class DbConfig {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void testConnection() {
+    public void getConnection() {
         try (Connection connection = dataSource().getConnection()) {
             if (connection != null && !connection.isClosed()) {
                 log.info("Connected to the database");
