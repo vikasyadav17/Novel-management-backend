@@ -3,3 +3,8 @@ db:
   url: jdbc:mysql://localhost:3306/library?serverTimezone=UTC
   username: root
   password: admin
+
+logging:
+  level:
+    root: INFO
+    com.novel.web.configuration: INFO
