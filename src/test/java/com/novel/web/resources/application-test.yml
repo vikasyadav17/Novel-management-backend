@@ -8,3 +8,8 @@ logging:
   level:
     root: INFO
     com.novel.web.configuration: INFO
+
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS

@@ -1,6 +1,9 @@
 spring:
   application:
     name: web
+  output:
+    ansi:
+      enabled: ALWAYS
   jpa:
     hibernate:
       ddl-auto: update

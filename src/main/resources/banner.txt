@@ -1,0 +1,16 @@
+${AnsiColor.BRIGHT_CYAN} _   _                 _ 
+${AnsiColor.BRIGHT_BLUE}| \ | | _____   _____| |
+${AnsiColor.BRIGHT_GREEN}|  \| |/ _ \ \ / / _ \ |
+${AnsiColor.BRIGHT_YELLOW}| |\  | (_) \ V /  __/ |
+${AnsiColor.BRIGHT_MAGENTA}|_| \_|\___/ \_/ \___|_|
+
+${AnsiColor.BRIGHT_RED} _     _ _                          
+${AnsiColor.BRIGHT_GREEN}| |   (_) |__  _ __ __ _ _ __ _   _ 
+${AnsiColor.BRIGHT_YELLOW}| |   | | '_ \| '__/ _` | '__| | | |
+${AnsiColor.BRIGHT_CYAN}| |___| | |_) | | | (_| | |  | |_| |
+${AnsiColor.BRIGHT_MAGENTA}|_____|_|_.__/|_|  \__,_|_|   \__, |
+${AnsiColor.BRIGHT_WHITE}                              |___/ 
+
+${AnsiColor.BRIGHT_WHITE}:: Novel Library ::                     ${AnsiColor.BRIGHT_WHITE}:: Version :: ${application.version}
+${AnsiColor.BRIGHT_WHITE}:: Started On :: ${application.formatted-start-time} ${AnsiColor.BRIGHT_WHITE}:: Java :: ${java.version}
+${AnsiColor.DEFAULT}

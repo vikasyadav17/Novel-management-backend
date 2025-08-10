@@ -43,7 +43,7 @@ public class NovelDetails {
     @JsonIgnore
     private Novel novel;
 
-    NovelDetails(String description, boolean mcCheating, String specialCharacteristicOfMc) {
+    public NovelDetails(String description, boolean mcCheating, String specialCharacteristicOfMc) {
         this.description = description;
         this.mcCheating = mcCheating;
         this.specialCharacteristicOfMc = specialCharacteristicOfMc;
