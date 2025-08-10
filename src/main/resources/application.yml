@@ -1,6 +1,7 @@
 spring:
   application:
     name: web
+    # below code adds color in terminal
   output:
     ansi:
       enabled: ALWAYS
