@@ -4,8 +4,8 @@ import org.springframework.http.ResponseEntity;
 
 public class NovelRatingsController {
 
-    public ResponseEntity<String> addRatings() {
+    // public ResponseEntity<String> addRatings() {
 
-    }
+    // }
 
 }
