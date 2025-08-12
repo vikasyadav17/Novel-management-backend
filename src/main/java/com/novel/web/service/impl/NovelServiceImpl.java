@@ -89,7 +89,7 @@ public class NovelServiceImpl implements NovelService {
      * 
      * @param name - name of the novel to search for
      * @param link - link of the novel to search for
-     * @returns true if there's a novel already with same name or link
+     * @return true if there's a novel already with same name or link
      * @throws IllegalArgumentException if both name and link are null or empty
      */
     @Override
