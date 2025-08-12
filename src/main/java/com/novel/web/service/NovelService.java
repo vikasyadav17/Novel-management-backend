@@ -9,7 +9,7 @@ public interface NovelService {
 
     public Long addNovelIfNotExists(NovelRequestDTO novel);
 
-    public boolean findNovelByNameorLink(String name, String link);
+    public boolean findNovelByNameOrLink(String name, String link);
 
     public List<Novel> findNovelByName(String name);
 

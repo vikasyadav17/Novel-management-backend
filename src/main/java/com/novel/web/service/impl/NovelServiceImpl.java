@@ -37,7 +37,7 @@ public class NovelServiceImpl implements NovelService {
         Novel novel = novelRequestMapper.toEntity(novelRequestDTO);
         novel.getNovelDetails().setNovel(novel);
         log.info("Checking if there is already a novel with either same name or link ....");
-        if (novelrepo.findByNameOrLink(novel.getName(), novel.getLink()).isPresent()) {
+        if (novelrepo.findNovelByNameOrLink(novel.getName(), novel.getLink()).isPresent()) {
             throw new DataIntegrityViolationException("Novel already exists with name: " + novel.getName()
                     + " and link : " + novel.getLink());
 
@@ -50,9 +50,9 @@ public class NovelServiceImpl implements NovelService {
     }
 
     @Override
-    public boolean findNovelByNameorLink(String name, String link) {
+    public boolean findNovelByNameOrLink(String name, String link) {
         log.info("Looking for novel with name : " + name + " or with link  " + link);
-        Optional<Novel> novel = novelrepo.findByNameOrLink(name, link);
+        Optional<Novel> novel = novelrepo.findNovelByNameOrLink(name, link);
         if (novel.isPresent()) {
             log.error("oops!! Novel is already in the system");
             return true;
