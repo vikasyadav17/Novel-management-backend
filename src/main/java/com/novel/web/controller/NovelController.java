@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +26,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController("/novel")
+@RestController
+@RequestMapping("/novel")
 public class NovelController {
 
     private NovelService novelService;
@@ -38,7 +41,7 @@ public class NovelController {
     }
 
     @Operation(summary = "Total no. of novels", description = "returns total numbers novels in the library")
-    @RequestMapping(value = "/novels", method = RequestMethod.GET)
+    @GetMapping("/count")
     public Long getTotalNovels() {
         log.info("User has requested total number of libraries in the novel");
         Long novelCount = novelService.getNovelsCount();
@@ -47,7 +50,7 @@ public class NovelController {
     }
 
     @Operation(summary = "Home route", description = "Returns a welcome message for the novel library")
-    @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
+    @GetMapping("/home")
     public String home() {
         return "Novel library";
     }
@@ -58,7 +61,7 @@ public class NovelController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "500", description = "Server error")
     })
-    @RequestMapping(value = { "/add" }, method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<String> addNovelIfNotExists(@RequestBody NovelRequestDTO novelDTO) {
         log.info("User wants to add novel : " + novelDTO.toString() + " in the database");
         try {
@@ -86,7 +89,7 @@ public class NovelController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "500", description = "Server error")
     })
-    @RequestMapping(value = "/name", method = RequestMethod.GET)
+    @GetMapping("/search/name")
     public ResponseEntity<List<NovelRequestDTO>> getNovelByName(@RequestParam String name) {
         if (name != null && name.length() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "novel name must not be empty");
@@ -106,7 +109,7 @@ public class NovelController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "500", description = "Server error")
     })
-    @RequestMapping(value = "/genre", method = RequestMethod.GET)
+    @GetMapping("/search/genre")
     public ResponseEntity<List<NovelRequestDTO>> getNovelByGenre(@RequestParam String genre) {
 
         if (genre != null && genre.length() == 0) {
