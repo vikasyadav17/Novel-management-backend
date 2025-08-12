@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/novel")
+@RequestMapping("/novels")
 public class NovelController {
 
     private NovelService novelService;
@@ -42,11 +41,11 @@ public class NovelController {
 
     @Operation(summary = "Total no. of novels", description = "returns total numbers novels in the library")
     @GetMapping("/count")
-    public Long getTotalNovels() {
+    public ResponseEntity<Long> getTotalNovels() {
         log.info("User has requested total number of libraries in the novel");
         Long novelCount = novelService.getNovelsCount();
         log.info("total number of novels in the library are  " + novelCount);
-        return novelCount;
+        return ResponseEntity.ok(novelCount);
     }
 
     @Operation(summary = "Home route", description = "Returns a welcome message for the novel library")
@@ -83,45 +82,28 @@ public class NovelController {
 
     }
 
-    @Operation(summary = "searches for a novel with a name", description = "returns novel details if exists")
+    @Operation(summary = "searches for a novel with a name/genre", description = "returns novel details if exists")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Novel added successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "500", description = "Server error")
     })
-    @GetMapping("/search/name")
-    public ResponseEntity<List<NovelRequestDTO>> getNovelByName(@RequestParam String name) {
-        if (name != null && name.length() == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "novel name must not be empty");
-
-        List<Novel> novel = novelService.findNovelByName(name);
-        if (novel.size() == 0) {
-            log.error("no novel exists in the sytem that contains " + name + " keyword ");
+    @GetMapping
+    public ResponseEntity<List<NovelRequestDTO>> getNovelByName(@RequestParam(required = false) String name,
+            @RequestParam(required = false) String genre) {
+        List<Novel> novels = null;
+        if (name != null && name.length() == 0 && genre != null && genre.length() == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "novel name / genre must not be empty");
+        if (genre != null && genre.length() != 0) {
+            log.info("user has requested novel search with genre");
+            novels = novelService.findNovelByGenre(genre);
+        } else {
+            log.info("user has requested novel search with name");
+            novels = novelService.findNovelByName(name);
         }
-        log.info(novel.size() + " novel/s found that contains keyword " + name);
-        List<NovelRequestDTO> dto = novelRequestMapper.toDTOList(novel);
+        log.info(novels.size() + " novel/s found that contains keyword " + name);
+        List<NovelRequestDTO> dto = novelRequestMapper.toDTOList(novels);
         return ResponseEntity.ok(dto);
-    }
-
-    @Operation(summary = "get Novel with given genre", description = "returns all the novels with the given genre")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Novel added successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "500", description = "Server error")
-    })
-    @GetMapping("/search/genre")
-    public ResponseEntity<List<NovelRequestDTO>> getNovelByGenre(@RequestParam String genre) {
-
-        if (genre != null && genre.length() == 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "genre must not be empty");
-        }
-        List<Novel> novels = novelService.findNovelByGenre(genre);
-        if (novels.size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no novels found for the genre : " + genre);
-        }
-
-        List<NovelRequestDTO> novelsDTO = novelRequestMapper.toDTOList(novels);
-        return ResponseEntity.ok(novelsDTO);
     }
 
 }
