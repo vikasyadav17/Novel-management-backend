@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,23 +30,28 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/novels")
 public class NovelController {
 
-    private NovelService novelService;
+    private final NovelService novelService;
 
-    @Autowired
-    private NovelRequestMapper novelRequestMapper;
+    private final NovelRequestMapper novelRequestMapper;
 
-    public NovelController(NovelService novelService) {
+    public NovelController(NovelService novelService, NovelRequestMapper novelRequestMapper) {
         this.novelService = novelService;
+        this.novelRequestMapper = novelRequestMapper;
 
     }
 
     @Operation(summary = "Total no. of novels", description = "returns total numbers novels in the library")
     @GetMapping("/count")
     public ResponseEntity<Long> getTotalNovels() {
-        log.info("User has requested total number of libraries in the novel");
-        Long novelCount = novelService.getNovelsCount();
-        log.info("total number of novels in the library are  " + novelCount);
-        return ResponseEntity.ok(novelCount);
+        log.info("Fetching total number of novels");
+        try {
+            Long novelCount = novelService.getNovelsCount();
+            log.info("total number of novels in the library are : {} ", novelCount);
+            return ResponseEntity.ok(novelCount);
+        } catch (Exception ex) {
+            log.error("Error fetching novel count: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @Operation(summary = "Home route", description = "Returns a welcome message for the novel library")
@@ -54,29 +60,33 @@ public class NovelController {
         return "Novel library";
     }
 
-    @Operation(summary = "adds a novel", description = "Adds a novel in the library")
+    @Operation(summary = "Add a novel", description = "Adds a novel to the library")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Novel added successfully"),
+            @ApiResponse(responseCode = "201", description = "Novel added successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "409", description = "Novel already exists"),
             @ApiResponse(responseCode = "500", description = "Server error")
     })
     @PostMapping
     public ResponseEntity<String> addNovelIfNotExists(@RequestBody NovelRequestDTO novelDTO) {
-        log.info("User wants to add novel : " + novelDTO.toString() + " in the database");
-        try {
-            Long id = -1L;
+        log.info("User wants to add novel : {} in the database", novelDTO.toString());
 
-            id = novelService.addNovelIfNotExists(novelDTO);
+        if (novelDTO == null) {
+            return ResponseEntity.badRequest().body("Novel data cannot be null");
+        }
+        try {
+
+            Long id = novelService.addNovelIfNotExists(novelDTO);
             // if (id == -1L) {
             // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Novel
             // not added due to an error.");
             // }
-            return ResponseEntity.ok("Record added with ID " + id);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Novel added with id : " + id);
         } catch (DataIntegrityViolationException ex) {
-            log.warn("Duplicate novel found: " + ex.getMessage());
+            log.warn("Duplicate novel found: {} ", ex.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
         } catch (Exception ex) {
-            log.error("Unexpected error: " + ex.getMessage());
+            log.error("Unexpected error: {} ", ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error occurred.");
         }
 
@@ -84,26 +94,49 @@ public class NovelController {
 
     @Operation(summary = "searches for a novel with a name/genre", description = "returns novel details if exists")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Novel added successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "200", description = "Retreived novels successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input - at least one search parameter required"),
+            @ApiResponse(responseCode = "404", description = "No novels found"),
             @ApiResponse(responseCode = "500", description = "Server error")
     })
     @GetMapping
-    public ResponseEntity<List<NovelRequestDTO>> getNovelByName(@RequestParam(required = false) String name,
+    public ResponseEntity<List<NovelRequestDTO>> searchNovel(@RequestParam(required = false) String name,
             @RequestParam(required = false) String genre) {
-        List<Novel> novels = null;
-        if (name != null && name.length() == 0 && genre != null && genre.length() == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "novel name / genre must not be empty");
-        if (genre != null && genre.length() != 0) {
-            log.info("user has requested novel search with genre");
-            novels = novelService.findNovelByGenre(genre);
-        } else {
-            log.info("user has requested novel search with name");
-            novels = novelService.findNovelByName(name);
+
+        boolean hasName = name != null && !name.trim().isEmpty();
+        boolean hasGenre = genre != null && !genre.trim().isEmpty();
+
+        if (!hasName && !hasGenre) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "At least one search parameter (name or genre) must be provided");
         }
-        log.info(novels.size() + " novel/s found that contains keyword " + name);
-        List<NovelRequestDTO> dto = novelRequestMapper.toDTOList(novels);
-        return ResponseEntity.ok(dto);
+        try {
+            List<Novel> novels;
+            if (hasGenre) {
+                log.info("Searching novels by genre: {}", genre.trim());
+                novels = novelService.findNovelByGenre(genre.trim());
+            } else {
+                log.info("Searching novels by name: {}", name.trim());
+                novels = novelService.findNovelByName(name.trim());
+            }
+            if (novels.isEmpty()) {
+                String searchType = hasName ? "name" : "genre";
+                String searchTerm = hasName ? name : genre;
+                log.info("No novels found for {}: {}", searchType, searchTerm);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No novels found for " + searchType + ": " + searchTerm);
+            }
+            log.info("{} novel(s) found", novels.size());
+            List<NovelRequestDTO> novelsDTO = novelRequestMapper.toDTOList(novels);
+            return ResponseEntity.ok(novelsDTO);
+
+        } catch (ResponseStatusException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            log.error("Error searching novels: {}", ex.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Error occurred while searching novels");
+        }
     }
 
 }
