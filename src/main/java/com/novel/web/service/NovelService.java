@@ -17,4 +17,6 @@ public interface NovelService {
 
     public Long getNovelsCount();
 
+    public Novel updateNovel(Long id, String name, String link, String originalName, String genre);
+
 }

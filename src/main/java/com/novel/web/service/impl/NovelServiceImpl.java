@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.novel.web.domain.Novel;
@@ -12,6 +13,7 @@ import com.novel.web.mapper.NovelRequestMapper;
 import com.novel.web.repositories.NovelRepository;
 import com.novel.web.service.NovelService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -144,6 +146,61 @@ public class NovelServiceImpl implements NovelService {
         log.info("Found {} novel(s) with genre: {}", novels.size(), genre.trim());
         return novels;
 
+    }
+
+    /**
+     * updates novel information
+     * 
+     * @param name         - update the novel name to
+     * @param link         - update the novel link to
+     * @param originalName - update the novel original name to
+     * @param genre        - update the novel genre name to
+     * @return
+     * @throws NotFoundException if there is no record with specified id in the
+     *                           Library
+     */
+    @Override
+    public Novel updateNovel(Long id, String name, String link, String originalName, String genre) {
+        Optional<Novel> novelFound = novelRepo.findById(id);
+        if (!novelFound.isPresent()) {
+            throw new EntityNotFoundException("No Novel exists in the system with id " + id);
+        }
+        Novel novel = novelFound.get();
+
+        if (name != null && !name.trim().isEmpty()) {
+            log.info("Name has to updated from {}  to {}", novel.getName(), name);
+            log.info(
+                    "but before  updating the date . Need to check if there's already a novel with  name : {} in library",
+                    name);
+            if (novelRepo.findByName(name).isPresent()) {
+                throw new DataIntegrityViolationException(
+                        "Novel with specified name already exists in the library :- " +
+                                name);
+            }
+            novel.setName(name);
+        }
+        if (link != null && !link.trim().isEmpty()) {
+            log.info("Link has to updated from {}  to {}", novel.getLink(), link);
+
+            log.info(
+                    "but before we doing the update . Need to check if there's already a novel with that link in library");
+            if (novelRepo.findByName(name).isPresent()) {
+                throw new DataIntegrityViolationException(
+                        "Novel with specified link already exists in the library :- " +
+                                link);
+            }
+            novel.setLink(link);
+        }
+        if (originalName != null && !originalName.trim().isEmpty()) {
+            log.info("OriginalName has to updated from {}  to {}", novel.getOriginalName(), originalName);
+            novel.setOriginalName(originalName);
+        }
+        if (genre != null && !genre.trim().isEmpty()) {
+            log.info("Genre has to updated from {}  to {}", novel.getGenre(), genre);
+            novel.setGenre(genre);
+        }
+        novelRepo.save(novel);
+        return novel;
     }
 
 }

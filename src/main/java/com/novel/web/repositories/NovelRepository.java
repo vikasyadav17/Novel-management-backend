@@ -16,6 +16,10 @@ public interface NovelRepository extends CrudRepository<Novel, Long> {
 
     Optional<Novel> findById(Long id);
 
+    Optional<Novel> findByName(String name);
+
+    Optional<Novel> findByLink(String link);
+
     Optional<Novel> findNovelByNameOrLink(String name, String link);
 
     long count();

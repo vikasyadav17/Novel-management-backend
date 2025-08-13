@@ -1,15 +1,15 @@
-${AnsiColor.BRIGHT_RED} _   _                 _ 
-${AnsiColor.BRIGHT_RED}| \ | | _____   _____| |
-${AnsiColor.BRIGHT_RED}|  \| |/ _ \ \ / / _ \ |
-${AnsiColor.BRIGHT_RED}| |\  | (_) \ V /  __/ |
-${AnsiColor.BRIGHT_RED}|_| \_|\___/ \_/ \___|_|
+${AnsiColor.BRIGHT_BLUE} _   _                 _ 
+${AnsiColor.BRIGHT_BLUE}| \ | | _____   _____| |
+${AnsiColor.BRIGHT_BLUE}|  \| |/ _ \ \ / / _ \ |
+${AnsiColor.BRIGHT_BLUE}| |\  | (_) \ V /  __/ |
+${AnsiColor.BRIGHT_BLUE}|_| \_|\___/ \_/ \___|_|
 
-${AnsiColor.BRIGHT_RED} _     _ _                          
-${AnsiColor.BRIGHT_RED}| |   (_) |__  _ __ __ _ _ __ _   _ 
-${AnsiColor.BRIGHT_RED}| |   | | '_ \| '__/ _` | '__| | | |
-${AnsiColor.BRIGHT_RED}| |___| | |_) | | | (_| | |  | |_| |
-${AnsiColor.BRIGHT_RED}|_____|_|_.__/|_|  \__,_|_|   \__, |
-${AnsiColor.BRIGHT_RED}                              |___/ 
+${AnsiColor.BRIGHT_BLUE} _     _ _                          
+${AnsiColor.BRIGHT_BLUE}| |   (_) |__  _ __ __ _ _ __ _   _ 
+${AnsiColor.BRIGHT_BLUE}| |   | | '_ \| '__/ _` | '__| | | |
+${AnsiColor.BRIGHT_BLUE}| |___| | |_) | | | (_| | |  | |_| |
+${AnsiColor.BRIGHT_BLUE}|_____|_|_.__/|_|  \__,_|_|   \__, |
+${AnsiColor.BRIGHT_BLUE}                              |___/ 
 
 ${AnsiColor.BRIGHT_RED}:: Novel Library ::                     ${AnsiColor.BRIGHT_WHITE}:: Version :: ${application.version}
 ${AnsiColor.BRIGHT_RED}:: Started On :: ${application.formatted-start-time} ${AnsiColor.BRIGHT_WHITE}:: Java :: ${java.version}
