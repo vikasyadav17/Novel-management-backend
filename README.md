@@ -77,8 +77,8 @@ com.novel.web
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/vikasyadav17/Novel-management-backend.git
+   cd Novel-management-backend
    ```
 
 2. **Configure the Database**  
