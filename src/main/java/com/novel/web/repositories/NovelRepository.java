@@ -2,7 +2,7 @@ package com.novel.web.repositories;
 
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.lang.NonNull;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,16 +11,15 @@ import com.novel.web.domain.Novel;
 @Repository
 public interface NovelRepository extends CrudRepository<Novel, Long> {
 
-    @SuppressWarnings("unchecked")
-    Novel save(Novel novel);
+    @Override
+    @NonNull
+    Optional<Novel> findById(@NonNull Long id);
 
-    Optional<Novel> findById(Long id);
+    boolean existsByName(String name);
 
-    Optional<Novel> findByName(String name);
+    boolean existsByLink(String link);
 
-    Optional<Novel> findByLink(String link);
-
-    Optional<Novel> findNovelByNameOrLink(String name, String link);
+    boolean existsByNameOrLink(String name, String link);
 
     long count();
 

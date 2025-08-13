@@ -73,7 +73,7 @@ public class NovelServiceImpl implements NovelService {
         }
         log.info("Checking if novel already exists with name: {} or link: {}",
                 novel.getName(), novel.getLink());
-        if (novelRepo.findNovelByNameOrLink(novel.getName(), novel.getLink()).isPresent()) {
+        if (novelRepo.existsByNameOrLink(novel.getName(), novel.getLink())) {
             throw new DataIntegrityViolationException("Novel already exists with name: " + novel.getName()
                     + " and link : " + novel.getLink());
 
@@ -101,8 +101,8 @@ public class NovelServiceImpl implements NovelService {
         }
 
         log.info("Searching for novel with name: {} or link: {}", name, link);
-        Optional<Novel> novel = novelRepo.findNovelByNameOrLink(name, link);
-        if (novel.isPresent()) {
+
+        if (novelRepo.existsByNameOrLink(name, link)) {
             log.warn("Novel already exists in the system");
             return true;
         }
@@ -172,7 +172,7 @@ public class NovelServiceImpl implements NovelService {
             log.info(
                     "but before  updating the date . Need to check if there's already a novel with  name : {} in library",
                     name);
-            if (novelRepo.findByName(name).isPresent()) {
+            if (novelRepo.existsByName(name)) {
                 throw new DataIntegrityViolationException(
                         "Novel with specified name already exists in the library :- " +
                                 name);
@@ -184,7 +184,7 @@ public class NovelServiceImpl implements NovelService {
 
             log.info(
                     "but before we doing the update . Need to check if there's already a novel with that link in library");
-            if (novelRepo.findByName(name).isPresent()) {
+            if (novelRepo.existsByLink(link)) {
                 throw new DataIntegrityViolationException(
                         "Novel with specified link already exists in the library :- " +
                                 link);
