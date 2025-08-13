@@ -8,6 +8,16 @@ import org.springframework.stereotype.Repository;
 
 import com.novel.web.domain.Novel;
 
+/**
+ * Repository interface for managing {@link Novel} entities.
+ * Extends {@link CrudRepository} to provide basic CRUD and query operations.
+ * 
+ * Acts as the Data Access Layer for novel-related database interactions.
+ * 
+ * @author Vikas Yadav
+ * @version 1.0
+ * @since 2025
+ */
 @Repository
 public interface NovelRepository extends CrudRepository<Novel, Long> {
 

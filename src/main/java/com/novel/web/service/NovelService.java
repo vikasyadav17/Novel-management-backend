@@ -5,6 +5,16 @@ import java.util.List;
 import com.novel.web.domain.Novel;
 import com.novel.web.dto.request.NovelRequestDTO;
 
+/**
+ * Service interface for managing {@link Novel} services.
+ * 
+ * Contains declartion of th business logic methods related to novels.
+ * This layer defines the contract for services that handle novelmanagement
+ * 
+ * @author Vikas Yadav
+ * @version 1.0
+ * @since 2025
+ */
 public interface NovelService {
 
     public Long addNovelIfNotExists(NovelRequestDTO novel);

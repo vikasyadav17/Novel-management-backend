@@ -34,6 +34,8 @@ public class NovelServiceImpl implements NovelService {
     private final NovelRequestMapper novelRequestMapper;
 
     /**
+     * injecting novelRepository and novelRequestMapper into the novelServiceImpl
+     * constructor
      * 
      * @param novelRepository    - repository for novel data operations
      * @param novelRequestMapper - Mapper for converting between DTO and entity
@@ -43,6 +45,10 @@ public class NovelServiceImpl implements NovelService {
         this.novelRequestMapper = novelRequestMapper;
     }
 
+    /**
+     * returns the total number of novels present in the library
+     *
+     */
     @Override
     public Long getNovelsCount() {
         log.info("Fetching total count of novels");
