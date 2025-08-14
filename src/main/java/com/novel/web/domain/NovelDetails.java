@@ -32,6 +32,8 @@ public class NovelDetails {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    private String mcName;
+
     private boolean mcCheating;
 
     @Lob

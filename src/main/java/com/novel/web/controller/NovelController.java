@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/novels")
+@CrossOrigin(origins = "http://localhost:5173")
 public class NovelController {
 
     private final NovelService novelService;
@@ -61,6 +63,23 @@ public class NovelController {
     public String home() {
         return "Novel library";
     }
+
+    // ...existing code...
+
+    @Operation(summary = "Get all novels", description = "Returns all novels in the library")
+    @GetMapping("/all")
+    public ResponseEntity<List<NovelRequestDTO>> getAllNovels() {
+        try {
+            List<Novel> novels = novelService.getAllNovels();
+            List<NovelRequestDTO> novelsDTO = novelRequestMapper.toDTOList(novels);
+            return ResponseEntity.ok(novelsDTO);
+        } catch (Exception ex) {
+            log.error("Error fetching all novels: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // ...existing code...
 
     @Operation(summary = "searches for a novel with a name/genre", description = "returns novel details if exists")
     @ApiResponses(value = {
@@ -151,33 +170,31 @@ public class NovelController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateNovel(@PathVariable @Parameter(description = "ID of the novel to update") Long id,
-            @RequestParam(required = false) @Parameter(description = "name of the novel to update") String name,
-            @RequestParam(required = false) @Parameter(description = "link of the novel to update") String link,
-            @RequestParam(required = false) @Parameter(description = "originalName of the novel to update") String originalName,
-            @RequestParam(required = false) @Parameter(description = "genre of the novel to update") String genre) {
+    public ResponseEntity<?> updateNovel(
+            @PathVariable Long id,
+            @RequestBody NovelRequestDTO novelDTO) {
         if (id == null || id <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID must be a positive number");
         }
-        if ((name == null || name.trim().isEmpty()) && (link == null || link.trim().isEmpty()) && (originalName == null
-                || originalName.trim().isEmpty())
-                && (genre == null || genre.trim().isEmpty())) {
+        if ((novelDTO.getName() == null || novelDTO.getName().trim().isEmpty()) &&
+                (novelDTO.getLink() == null || novelDTO.getLink().trim().isEmpty()) &&
+                (novelDTO.getOriginalName() == null || novelDTO.getOriginalName().trim().isEmpty()) &&
+                (novelDTO.getGenre() == null || novelDTO.getGenre().trim().isEmpty())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "At least one field (name, link, originalName, genre) must be provided for update");
         }
         try {
             log.info("Updating novel with ID: {} - Fields: name={}, link={}, originalName={}, genre={}",
-                    id, name, link, originalName, genre);
-            Novel novel = novelService.updateNovel(id, name, link, originalName, genre);
+                    id, novelDTO.getName(), novelDTO.getLink(), novelDTO.getOriginalName(), novelDTO.getGenre());
+            Novel novel = novelService.updateNovel(id, novelDTO.getName(), novelDTO.getLink(),
+                    novelDTO.getOriginalName(), novelDTO.getGenre(), novelDTO.getNovelDetails());
             log.info("Novel updated successfully with ID: {}", id);
             return ResponseEntity.ok(novel);
         } catch (EntityNotFoundException ex) {
             log.warn("Novel not found with ID: {}", id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     "No Novel with the specified name/link exists in the library");
-        }
-
-        catch (DataIntegrityViolationException ex) {
+        } catch (DataIntegrityViolationException ex) {
             log.warn("Conflict while updating novel with ID: {} - {}", id, ex.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(
                     "Novel with the specified name/link already exists in the library");
@@ -185,13 +202,33 @@ public class NovelController {
             log.warn("Invalid input for novel update with ID: {} - {}", id, ex.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Invalid input: " + ex.getMessage());
-
         } catch (Exception ex) {
             log.error("Unexpected error while updating novel with ID: {} - {}", id, ex.getMessage(), ex);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Something went wrong while updating novel information");
         }
+    }
 
+    @Operation(summary = "Adds  novel in bulk", description = "Adds multiple novel to the library")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Novels added successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
+    @PostMapping("/bulk")
+    public ResponseEntity<String> addNovelsInBulk(@RequestBody List<NovelRequestDTO> novels) {
+        log.info("name of novels needs to be uploaded :  {} ", novels.size());
+        try {
+            Long recordsInserted = novelService.addNovelsInBulk(novels);
+            log.info("records requested to insert  are : {}  and actually inserted are : {} ", novels.size(),
+                    recordsInserted);
+            return ResponseEntity.status(HttpStatus.CREATED).body("No of records inserted : " + recordsInserted);
+
+        } catch (Exception ex) {
+            log.warn("Exception occured while doing bulk upload");
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Bulk upload failed due to an error.");
+        }
     }
 
 }

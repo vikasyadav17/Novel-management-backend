@@ -3,6 +3,7 @@ package com.novel.web.repositories;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.lang.NonNull;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -88,5 +89,14 @@ public interface NovelRepository extends CrudRepository<Novel, Long> {
      * @return list of the novels with the specified genre
      */
     List<Novel> findAllByGenreIgnoreCase(String genre);
+
+    /**
+     * retreives all the novels present in the library
+     * 
+     * @param genre
+     * @return all the novels present in the library
+     */
+    @Query("SELECT n FROM Novel n JOIN FETCH n.novelDetails")
+    List<Novel> findAllWithDetails();
 
 }
