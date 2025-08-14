@@ -1,6 +1,7 @@
 package com.novel.web.dto.request;
 
 import com.novel.web.domain.NovelDetails;
+import com.novel.web.domain.NovelOpinion;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +17,6 @@ public class NovelRequestDTO {
     private String name;
     private String genre;
     private NovelDetails novelDetails;
+    private NovelOpinion novelOpinion;
 
 }

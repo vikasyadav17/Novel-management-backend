@@ -60,8 +60,9 @@ public class NovelDetails {
     @JsonIgnore
     private Novel novel;
 
-    public NovelDetails(String description, String tags, String specialCharacteristicOfMc) {
+    public NovelDetails(String description, String mcName, String tags, String specialCharacteristicOfMc) {
         this.description = description;
+        this.mcName = mcName;
         this.tags = tags;
         this.specialCharacteristicOfMc = specialCharacteristicOfMc;
     }

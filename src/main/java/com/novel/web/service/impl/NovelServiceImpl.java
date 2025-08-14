@@ -243,6 +243,7 @@ public class NovelServiceImpl implements NovelService {
                 if (novel.getNovelDetails() != null) {
                     novel.getNovelDetails().setNovel(novel);
                 }
+                novel.getNovelOpinion().setNovel(novel);
                 toSave.add(novel);
             }
             // else skip this novel

@@ -1,18 +1,18 @@
-package com.novel.web.dto.request;
+// package com.novel.web.dto.request;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+// import lombok.Getter;
+// import lombok.Setter;
+// import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-public class NovelDetailsRequestDTO {
+// @Getter
+// @Setter
+// @ToString
+// public class NovelDetailsRequestDTO {
 
-    private String description;
+// private String description;
 
-    private boolean mcCheating;
+// private boolean mcCheating;
 
-    private String specialCharacteristicOfMc;
+// private String specialCharacteristicOfMc;
 
-}
+// }

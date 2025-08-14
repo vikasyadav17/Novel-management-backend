@@ -28,9 +28,9 @@ public class NovelOpinion {
     @Id
     public long Id;
 
-    @Min(1)
-    @Max(10)
-    public int rating;
+    @Min(0)
+    @Max(5)
+    public Integer rating;
 
     public int chaptersRead;
 
