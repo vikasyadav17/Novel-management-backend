@@ -190,18 +190,21 @@ public class NovelController {
         if (id == null || id <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID must be a positive number");
         }
-        if ((novelDTO.getName() == null || novelDTO.getName().trim().isEmpty()) &&
-                (novelDTO.getLink() == null || novelDTO.getLink().trim().isEmpty()) &&
-                (novelDTO.getOriginalName() == null || novelDTO.getOriginalName().trim().isEmpty()) &&
-                (novelDTO.getGenre() == null || novelDTO.getGenre().trim().isEmpty())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "At least one field (name, link, originalName, genre) must be provided for update");
-        }
+        // if ((novelDTO.getName() == null || novelDTO.getName().trim().isEmpty()) &&
+        // (novelDTO.getLink() == null || novelDTO.getLink().trim().isEmpty()) &&
+        // (novelDTO.getOriginalName() == null ||
+        // novelDTO.getOriginalName().trim().isEmpty()) &&
+        // (novelDTO.getGenre() == null || novelDTO.getGenre().trim().isEmpty())) {
+        // throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+        // "At least one field (name, link, originalName, genre) must be provided for
+        // update");
+        // }
         try {
             log.info("Updating novel with ID: {} - Fields: name={}, link={}, originalName={}, genre={}",
                     id, novelDTO.getName(), novelDTO.getLink(), novelDTO.getOriginalName(), novelDTO.getGenre());
             Novel novel = novelService.updateNovel(id, novelDTO.getName(), novelDTO.getLink(),
-                    novelDTO.getOriginalName(), novelDTO.getGenre(), novelDTO.getNovelDetails());
+                    novelDTO.getOriginalName(), novelDTO.getGenre(), novelDTO.getNovelDetails(),
+                    novelDTO.getNovelOpinion());
             log.info("Novel updated successfully with ID: {}", id);
             return ResponseEntity.ok(novel);
         } catch (EntityNotFoundException ex) {

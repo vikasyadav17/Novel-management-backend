@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.novel.web.domain.Novel;
 import com.novel.web.domain.NovelDetails;
+import com.novel.web.domain.NovelOpinion;
 import com.novel.web.dto.request.NovelRequestDTO;
 import com.novel.web.mapper.NovelRequestMapper;
 import com.novel.web.repositories.NovelRepository;
@@ -169,7 +170,7 @@ public class NovelServiceImpl implements NovelService {
      */
     @Override
     public Novel updateNovel(Long id, String name, String link, String originalName, String genre,
-            NovelDetails novelDetails) {
+            NovelDetails novelDetails, NovelOpinion novelOpinion) {
         Optional<Novel> novelFound = novelRepo.findById(id);
         if (!novelFound.isPresent()) {
             throw new EntityNotFoundException("No Novel exists in the system with id " + id);
@@ -180,41 +181,7 @@ public class NovelServiceImpl implements NovelService {
         novel.setName(name);
         novel.setOriginalName(originalName);
         novel.setNovelDetails(novelDetails);
-        // if (name != null && !name.trim().isEmpty()) {
-        // log.info("Name has to updated from {} to {}", novel.getName(), name);
-        // log.info(
-        // "but before updating the date . Need to check if there's already a novel with
-        // name : {} in library",
-        // name);
-        // if (novelRepo.existsByName(name)) {
-        // throw new DataIntegrityViolationException(
-        // "Novel with specified name already exists in the library :- " +
-        // name);
-        // }
-        // novel.setName(name);
-        // }
-        // if (link != null && !link.trim().isEmpty()) {
-        // log.info("Link has to updated from {} to {}", novel.getLink(), link);
-
-        // log.info(
-        // "but before we doing the update . Need to check if there's already a novel
-        // with that link in library");
-        // if (novelRepo.existsByLink(link)) {
-        // throw new DataIntegrityViolationException(
-        // "Novel with specified link already exists in the library :- " +
-        // link);
-        // }
-        // novel.setLink(link);
-        // }
-        // if (originalName != null && !originalName.trim().isEmpty()) {
-        // log.info("OriginalName has to updated from {} to {}",
-        // novel.getOriginalName(), originalName);
-        // novel.setOriginalName(originalName);
-        // }
-        // if (genre != null && !genre.trim().isEmpty()) {
-        // log.info("Genre has to updated from {} to {}", novel.getGenre(), genre);
-        // novel.setGenre(genre);
-        // }
+        novel.setNovelOpinion(novelOpinion);
         novelRepo.save(novel);
         return novel;
     }
