@@ -1,10 +1,16 @@
 package com.novel.web.domain;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
@@ -23,6 +29,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Entity
 @Table(name = "noveldetails", schema = "library")
+@EntityListeners(AuditingEntityListener.class)
 public class NovelDetails {
 
     @Id
@@ -34,10 +41,18 @@ public class NovelDetails {
 
     private String mcName;
 
-    private boolean mcCheating;
+    @Lob
+    private String tags;
 
     @Lob
     private String specialCharacteristicOfMc;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime addedOn;
+
+    @LastModifiedDate
+    private LocalDateTime lastUpdatedOn;
 
     @OneToOne
     @MapsId
@@ -45,9 +60,9 @@ public class NovelDetails {
     @JsonIgnore
     private Novel novel;
 
-    public NovelDetails(String description, boolean mcCheating, String specialCharacteristicOfMc) {
+    public NovelDetails(String description, String tags, String specialCharacteristicOfMc) {
         this.description = description;
-        this.mcCheating = mcCheating;
+        this.tags = tags;
         this.specialCharacteristicOfMc = specialCharacteristicOfMc;
     }
 

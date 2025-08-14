@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import com.novel.web.domain.Novel;
 import com.novel.web.domain.NovelDetails;
-import com.novel.web.domain.NovelRatings;
+import com.novel.web.domain.NovelOpinion;
 import com.novel.web.dto.request.NovelDetailsRequestDTO;
 import com.novel.web.dto.request.NovelRatingsRequestDto;
 import com.novel.web.dto.request.NovelRequestDTO;
@@ -20,7 +20,7 @@ public interface NovelRequestMapper {
 
     NovelDetailsRequestDTO toDTo(NovelDetails novelDetails);
 
-    NovelRatingsRequestDto toDto(NovelRatings novelRatings);
+    NovelRatingsRequestDto toDto(NovelOpinion novelRatings);
 
     List<NovelRequestDTO> toDTOList(List<Novel> novels);
 

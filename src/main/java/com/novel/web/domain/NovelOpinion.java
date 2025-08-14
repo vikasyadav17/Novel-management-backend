@@ -1,5 +1,7 @@
 package com.novel.web.domain;
 
+import java.sql.Date;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -20,8 +22,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "novelratings", schema = "library")
-public class NovelRatings {
+@Table(name = "novelopinion", schema = "library")
+public class NovelOpinion {
 
     @Id
     public long Id;
@@ -30,9 +32,13 @@ public class NovelRatings {
     @Max(10)
     public int rating;
 
+    public int chaptersRead;
+
     public boolean favorite;
 
     public boolean worthToContinue;
+
+    public String chaptersFrequency;
 
     @OneToOne
     @MapsId
@@ -40,10 +46,13 @@ public class NovelRatings {
     @JsonIgnore
     public Novel novel;
 
-    public NovelRatings(int rating, boolean favorite, boolean worthToContinue) {
+    public NovelOpinion(@Min(1) @Max(10) int rating, int chaptersRead, boolean favorite, boolean worthToContinue,
+            String chaptersFrequency) {
         this.rating = rating;
+        this.chaptersRead = chaptersRead;
         this.favorite = favorite;
         this.worthToContinue = worthToContinue;
+        this.chaptersFrequency = chaptersFrequency;
     }
 
 }

@@ -96,7 +96,7 @@ public interface NovelRepository extends CrudRepository<Novel, Long> {
      * @param genre
      * @return all the novels present in the library
      */
-    @Query("SELECT n FROM Novel n JOIN FETCH n.novelDetails")
+    @Query("SELECT n FROM Novel n JOIN FETCH n.novelDetails LEFT JOIN FETCH n.novelOpinion")
     List<Novel> findAllWithDetails();
 
 }

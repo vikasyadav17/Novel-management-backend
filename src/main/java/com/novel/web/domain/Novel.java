@@ -1,7 +1,15 @@
 package com.novel.web.domain;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +27,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Entity
+
 @Table(name = "novel", schema = "library", uniqueConstraints = @UniqueConstraint(columnNames = { "name" }))
 public class Novel {
 
@@ -36,6 +45,9 @@ public class Novel {
 
     @OneToOne(mappedBy = "novel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private NovelDetails novelDetails;
+
+    @OneToOne(mappedBy = "novel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private NovelOpinion novelOpinion;
 
     public Novel(String name, String link, String genre, String originalName) {
         this.name = name;
