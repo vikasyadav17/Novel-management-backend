@@ -1,9 +1,14 @@
 package com.novel.web.Controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.*;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -96,6 +101,41 @@ class NovelControllerTest {
 
                 verify(novelService).findNovelByGenre("Eastern Fantasy");
                 verify(novelRequestMapper).toDTOList(any());
+
+        }
+
+        @Test
+        void testUpdateNovel() throws Exception {
+                log.info("Testing novel update");
+                Novel updatedNovel = new Novel();
+                updatedNovel.setGenre("Martial Arts");
+
+                // forcefully setting the id value using reflection
+                Field idField = Novel.class.getDeclaredField("iD");
+                idField.setAccessible(true);
+                idField.set(updatedNovel, 1L);
+
+                // ID cannot be null
+                // All Fields together cannot be null
+                when(novelService.updateNovel(
+                                anyLong(),
+                                nullable(String.class),
+                                nullable(String.class),
+                                nullable(String.class),
+                                anyString())).thenReturn(updatedNovel);
+
+                mockMvc.perform(patch("/novels/{id}", 1L)
+                                .param("genre", "Martial Arts")
+                                .contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.genre").value("Martial Arts"));
+
+                verify(novelService, times(1))
+                                .updateNovel(anyLong(),
+                                                nullable(String.class),
+                                                nullable(String.class),
+                                                nullable(String.class),
+                                                eq("Martial Arts"));
 
         }
 }

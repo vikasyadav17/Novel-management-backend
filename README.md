@@ -78,7 +78,7 @@ com.novel.web
 
    ```bash
    git clone https://github.com/vikasyadav17/Novel-management-backend.git
-   cd Novel-management-backend
+   cd Novel-management-backend.
    ```
 
 2. **Configure the Database**  
