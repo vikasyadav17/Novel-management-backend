@@ -64,7 +64,21 @@ public class NovelController {
         return "Novel library";
     }
 
-    // ...existing code...
+    @Operation(summary = "Get all novels", description = "Returns all novels in the library")
+    @GetMapping("/{id}")
+    public ResponseEntity<Novel> getNovels(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID must be a positive number");
+        }
+        try {
+            Novel novel = novelService.getNovelById(id);
+
+            return ResponseEntity.ok(novel);
+        } catch (Exception ex) {
+            log.error("Error fetching all novels: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @Operation(summary = "Get all novels", description = "Returns all novels in the library")
     @GetMapping("/all")

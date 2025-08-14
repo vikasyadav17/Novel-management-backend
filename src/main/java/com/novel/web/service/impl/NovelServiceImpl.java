@@ -257,4 +257,14 @@ public class NovelServiceImpl implements NovelService {
 
     }
 
+    @Override
+    public Novel getNovelById(Long id) {
+
+        Optional<Novel> novelFound = novelRepo.findById(id);
+        if (!novelFound.isPresent())
+            throw new EntityNotFoundException("No Novel exists in the system with id " + id);
+
+        return novelFound.get();
+    }
+
 }

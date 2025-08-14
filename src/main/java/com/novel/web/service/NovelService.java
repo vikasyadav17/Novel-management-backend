@@ -35,4 +35,6 @@ public interface NovelService {
     public Novel updateNovel(Long id, String name, String link, String originalName, String genre,
             NovelDetails novelDetails);
 
+    public Novel getNovelById(Long id);
+
 }
