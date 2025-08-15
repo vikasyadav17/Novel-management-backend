@@ -41,14 +41,16 @@ public class NovelDetails {
 
     private String mcName;
 
+    private String novelCover;
+
     @Lob
     private String tags;
 
     @Lob
     private String specialCharacteristicOfMc;
 
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'In-Progress'")
-    private String status = "In-Progress";
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'Reading'")
+    private String status = "Reading";
 
     private int totalChapters;
 
