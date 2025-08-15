@@ -47,7 +47,10 @@ public class NovelDetails {
     @Lob
     private String specialCharacteristicOfMc;
 
-    private String status;
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'In-Progress'")
+    private String status = "In-Progress";
+
+    private int totalChapters;
 
     @CreatedDate
     @Column(updatable = false)
@@ -62,12 +65,13 @@ public class NovelDetails {
     @JsonIgnore
     private Novel novel;
 
-    public NovelDetails(String description, String mcName, String tags, String specialCharacteristicOfMc) {
+    public NovelDetails(String description, String mcName, String tags, int totalChapters,
+            String specialCharacteristicOfMc) {
         this.description = description;
         this.mcName = mcName;
         this.tags = tags;
         this.specialCharacteristicOfMc = specialCharacteristicOfMc;
-        this.status = "In-Progress";
+        this.totalChapters = totalChapters;
     }
 
 }
