@@ -80,6 +80,9 @@ public class NovelServiceImpl implements NovelService {
         if (novel.getNovelDetails() != null) {
             novel.getNovelDetails().setNovel(novel);
         }
+        if (novel.getNovelOpinion() != null) {
+            novel.getNovelOpinion().setNovel(novel);
+        }
         log.info("Checking if novel already exists with name: {} or link: {}",
                 novel.getName(), novel.getLink());
         if (novelRepo.existsByNameOrLink(novel.getName(), novel.getLink())) {

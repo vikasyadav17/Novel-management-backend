@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -36,9 +37,10 @@ public class NovelOpinion {
 
     public boolean favorite;
 
-    public boolean worthToContinue;
+    public String worthToContinue;
 
-    public String chaptersFrequency;
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT '1/2 daily chapters'")
+    public String chaptersFrequency = "1/2 daily chapters";
 
     @OneToOne
     @MapsId
@@ -46,13 +48,14 @@ public class NovelOpinion {
     @JsonIgnore
     public Novel novel;
 
-    public NovelOpinion(@Min(1) @Max(10) int rating, int chaptersRead, boolean favorite, boolean worthToContinue,
+    public NovelOpinion(@Min(1) @Max(10) int rating, int chaptersRead, boolean favorite,
+            String worthToContinue,
             String chaptersFrequency) {
         this.rating = rating;
         this.chaptersRead = chaptersRead;
         this.favorite = favorite;
         this.worthToContinue = worthToContinue;
-        this.chaptersFrequency = chaptersFrequency;
+        this.chaptersFrequency = chaptersFrequency != null ? chaptersFrequency : "1/2 daily chapters";
     }
 
 }
