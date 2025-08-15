@@ -47,6 +47,8 @@ public class NovelDetails {
     @Lob
     private String specialCharacteristicOfMc;
 
+    private String status;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime addedOn;
@@ -65,6 +67,7 @@ public class NovelDetails {
         this.mcName = mcName;
         this.tags = tags;
         this.specialCharacteristicOfMc = specialCharacteristicOfMc;
+        this.status = "In-Progress";
     }
 
 }
